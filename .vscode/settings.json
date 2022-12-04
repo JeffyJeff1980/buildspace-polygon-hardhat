@@ -1,0 +1,5 @@
+{
+  "solidity.compileUsingRemoteVersion": "v0.8.10",
+  "solidity.enableLocalNodeCompiler": false,
+  "editor.formatOnSave": true
+}
