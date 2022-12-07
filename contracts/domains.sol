@@ -1,23 +1,14 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.10;
 
-// We first import some OpenZeppelin Contracts.
-import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
-import "@openzeppelin/contracts/utils/Counters.sol";
-
+import "./libraries/BaseContract.sol";
 import {StringUtils} from "./libraries/StringUtils.sol";
-// We import another help function
 import "@openzeppelin/contracts/utils/Base64.sol";
-
 import "hardhat/console.sol";
 
 // We inherit the contract we imported. This means we'll have access
 // to the inherited contract's methods.
-contract Domains is ERC721URIStorage {
-    // Magic given to us by OpenZeppelin to help us keep track of tokenIds.
-    using Counters for Counters.Counter;
-    Counters.Counter private _tokenIdCounter;
-
+contract Domains is BaseContract {
     string public tld;
 
     // We'll be storing our NFT images on chain as SVGs
@@ -29,11 +20,8 @@ contract Domains is ERC721URIStorage {
     mapping(string => string) public records;
     mapping(uint => string) public names;
 
-    address payable public owner;
-
     error Unauthorized();
     error AlreadyRegistered();
-    error InvalidName(string name);
 
     constructor(string memory _tld) payable ERC721("GM Name Service", "GNS") {
         owner = payable(msg.sender);
@@ -140,21 +128,5 @@ contract Domains is ERC721URIStorage {
         domains[_name] = msg.sender;
         names[newTokenId] = _name;
         _tokenIdCounter.increment();
-    }
-
-    modifier onlyOwner() {
-        if (!isOwner()) revert Unauthorized();
-        _;
-    }
-
-    function isOwner() public view returns (bool) {
-        return msg.sender == owner;
-    }
-
-    function withdraw() public onlyOwner {
-      uint amount = address(this).balance;
-
-      (bool success, ) = msg.sender.call{value: amount}("");
-      require(success, "Failed to withdraw Matic");
     }
 }
