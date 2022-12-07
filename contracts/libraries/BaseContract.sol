@@ -27,6 +27,13 @@ contract BaseContract is IBaseContract, ERC721, ERC721Enumerable, Pausable, Owna
     
     constructor() ERC721("BaseContract", "BASE") {}
 
+    function safeMint(address to, string memory uri) public onlyOwner {
+        uint256 tokenId = _tokenIdCounter.current();
+        _tokenIdCounter.increment();
+        _safeMint(to, tokenId);
+        _setTokenURI(tokenId, uri);
+    }
+
     // The following functions are overrides required by Solidity.
     function _beforeTokenTransfer(address from, address to, uint256 tokenId, uint256 batchSize)
         internal
