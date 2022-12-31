@@ -5,33 +5,18 @@ pragma solidity ^0.8.9;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/security/Pausable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
-import "./IBaseContract.sol";
 
-contract BaseContract is IBaseContract, ERC721, ERC721Enumerable, Pausable, Ownable, ERC721Burnable {
-    using Counters for Counters.Counter;
+contract  BaseContract is ERC721URIStorage, ERC721Enumerable, Pausable, Ownable, ERC721Burnable {
     using SafeMath for uint256;
 
-    Counters.Counter public _tokenIdCounter;
-
-    string public _baseTokenURI;
-    uint256 public _mintPrice = 0;
-    uint256 public _discountMintPrice = 0;
-    uint256 public _maxSupply = 0;
-    uint256 public _maxMintAmount = 0;
-    
-    constructor() ERC721("BaseContract", "BASE") {}
-
-    function safeMint(address to, string memory uri) public onlyOwner {
-        uint256 tokenId = _tokenIdCounter.current();
-        _tokenIdCounter.increment();
-        _safeMint(to, tokenId);
-        _setTokenURI(tokenId, uri);
+    constructor() ERC721("GM Name Service", "GNS") {
     }
 
     // The following functions are overrides required by Solidity.
@@ -77,18 +62,6 @@ contract BaseContract is IBaseContract, ERC721, ERC721Enumerable, Pausable, Owna
 
     function unpause() public onlyOwner {
         _unpause();
-    }
-
-    function setBaseURI(string memory newBaseTokenURI) public onlyOwner {
-        _baseTokenURI = newBaseTokenURI;
-    }
-
-    function setMintPrice(uint256 newMintPrice) public onlyOwner {
-        _mintPrice = newMintPrice;
-    }
-
-    function setMaxMintAmount(uint256 newMaxMintAmount) public onlyOwner {
-        _maxMintAmount = newMaxMintAmount;
     }
 
     function withdraw() public onlyOwner {
