@@ -22,11 +22,11 @@ module.exports = {
       url: process.env.ALCHEMY_MAINNET_API_KEY_URL,
       accounts: [process.env.PRIVATE_KEY],
     },
-    mumbai: {
+    polygonMumbai: {
       url: process.env.ALCHEMY_POLYGON_MUMBAI_API_KEY_URL,
       accounts: [process.env.PRIVATE_KEY],
     },
-    matic: {
+    polygon: {
       url: process.env.ALCHEMY_POLYGON_MAINNET_API_KEY_URL,
       accounts: [process.env.PRIVATE_KEY],
     },
